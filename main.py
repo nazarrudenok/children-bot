@@ -7,6 +7,7 @@ bot = telebot.TeleBot(TOKEN)
 
 def rewriteTable() -> None:
     cursor.execute("TRUNCATE TABLE users")
+    cursor.execute("TRUNCATE TABLE ready")
     connection.commit()
     with open('jsons/children.json', 'r', encoding='utf-8') as f:
         children = json.load(f)
@@ -28,7 +29,6 @@ def start(message: str) -> None:
     if len(allUsers) == 0:
         cursor.execute("INSERT INTO chats (username, _id) VALUES (%s, %s)", (username, cht))
         connection.commit()
-        bot.send_message(cht, cht)
         bot.send_message(cht, 'Привіт 👋\nЩодня Ви будете отримувати інформацію про чергових 😉')
     else:
         bot.send_message(cht, 'Ой! 🫢\nСхоже, Ви вже є у списку користувачів\nРеєстрація не потрібна 😉')
@@ -48,7 +48,7 @@ def appoint(message: str) -> None:
         else:
             cursor.execute("SELECT name FROM ready WHERE status = '-'")
             allReady = cursor.fetchall()
-            if len(allReady) > 2:
+            if len(allReady) >= 2:
                 randomNamesR = random.sample(allReady, 2)
                 first = randomNamesR[0][0]
                 second = randomNamesR[1][0]
@@ -84,7 +84,7 @@ def appoint(message: str) -> None:
                     ChatIds = cursor.fetchall()
                     for c in range(len(ChatIds)):
                         chatid = int(ChatIds[c][0])
-                        bot.send_message(chatid, f'{first}\n{second}\nfrom main')
+                        bot.send_message(chatid, f'{first}\n{second}')
 
 @bot.message_handler(commands=['presence'])
 def presence(message: str) -> None:

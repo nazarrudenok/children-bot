@@ -3,10 +3,22 @@ import pymysql
 TOKEN = '6501337482:AAGQPejyBdZLl27c1W7XPQKjDBmHw7e6TI8'
 
 connection = pymysql.connect(
-    host='mysql://children-user:HaDQ1xA8vW3j@srv-captain--crmojtdafy-mysql-80x:3306/children-database',
-    user='children-user',
-    password='HaDQ1xA8vW3j',
-    database='children-database'
+    host='roundhouse.proxy.rlwy.net',
+    port=13374,
+    user='root',
+    password='GA4AFEgDgGbaaaEBgA-GGaDB6fdeHbbD',
+    database='railway'
 )
 
+# connection = pymysql.connect(
+#     host='localhost',
+#     user='root',
+#     password='',
+#     database='childs'
+# )
+
 cursor = connection.cursor()
+
+cursor.execute("CREATE TABLE IF NOT EXISTS users (id int AUTO_INCREMENT, name varchar(100), presence varchar(1), status varchar(1), PRIMARY KEY (id))")
+cursor.execute("CREATE TABLE IF NOT EXISTS chats (id int AUTO_INCREMENT, username varchar(100), _id int(10), PRIMARY KEY (id))")
+cursor.execute("CREATE TABLE IF NOT EXISTS ready (id int AUTO_INCREMENT, name varchar(100), status varchar(1), PRIMARY KEY (id))")
